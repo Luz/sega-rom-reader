@@ -14,6 +14,9 @@ Jumper: will be used later for the creation of a sega-game-programmer
 ROM: The first ROM that was read
 ![first-rom](https://raw.githubusercontent.com/Luz/sega-rom-reader/master/pics/pic4.jpg)
 
+Wire-Wrap pins: Close shot of two wire wrap connections
+![wire-wrap-pins](https://raw.githubusercontent.com/Luz/sega-rom-reader/master/pics/pic5.jpg)
+
 ## TODO
 * Since a ROM can be less than 4MB and the reader currently reads 4MB (21 adress lines at 2 bytes), a 2MB file will be read duplicated. Detect duplications and remove that unnecessary data.
 
