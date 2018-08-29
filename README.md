@@ -17,6 +17,12 @@ ROM: The first ROM that was read
 Wire-Wrap pins: Close shot of two wire wrap connections
 ![wire-wrap-pins](https://raw.githubusercontent.com/Luz/sega-rom-reader/master/pics/pic5.jpg)
 
+Cartridge pcb: This socket was not able to reliably hold an EEPROM
+![cartridge-bad-socket](https://raw.githubusercontent.com/Luz/sega-rom-reader/master/pics/pic6.jpg)
+
+Cartridge with 27C322: PCB still needs to be tested, but some bytes were already written
+![cartridge-with-27c322](https://raw.githubusercontent.com/Luz/sega-rom-reader/master/pics/pic7.jpg)
+
 ## TODO
 * Since a ROM can be less than 4MB and the reader currently reads 4MB (21 adress lines at 2 bytes), a 2MB file will be read duplicated. Detect duplications and remove that unnecessary data.
 
