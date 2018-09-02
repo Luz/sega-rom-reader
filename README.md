@@ -1,5 +1,5 @@
 # sega-rom-reader
-This reader for "sega mega drive" ROMs directly accesses the games by using the 5V-tolerant "Teensy 3.5".
+This reader/writer for "sega mega drive" ROMs directly accesses the games by using the 5V-tolerant "Teensy 3.5".
 
 ## Pictures of the reader:
 Reader: Teensy 3.5 and the socket for the cartridge
@@ -26,7 +26,11 @@ Cartridge with 27C322: PCB still needs to be tested, but some bytes were already
 ## TODO
 * Since a ROM can be less than 4MB and the reader currently reads 4MB (21 adress lines at 2 bytes), a 2MB file will be read duplicated. Detect duplications and remove that unnecessary data.
 
-* Add a button or a command to read more than just one ROM
+* Add a button to easily read more than just one ROM
 
-* Create a sega mega drive programmer
+* Add a description of the programming ability
+
+* Describe: BE/LE (endianess) and compare it to the "interleaved" *.smd files
+
+* Maybe add a function to swap the bytes to the *.smd format
 
