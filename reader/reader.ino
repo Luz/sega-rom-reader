@@ -1,4 +1,4 @@
-// 23.08.2018 github.com/Luz
+// github.com/Luz
 
 // Adress pins: 0 to 20 (21 pins)
 // Data pins: 24 to 39 (16 pins)
@@ -13,61 +13,59 @@ void setup() {
   for (int adressPin=0 ; adressPin<21 ; adressPin++)
     pinMode(adressPin, OUTPUT);
   for (int dataPin=24 ; dataPin<40 ; dataPin++)
-    pinMode(dataPin, INPUT);
+    pinMode(dataPin, INPUT); // INPUT for reader, OUTPUT for writer
   
   pinMode(cePin, OUTPUT);
+  chipEnable(false);
   pinMode(oePin, OUTPUT);
+  outputEnable(false);
   
   Serial.begin(115200); // USB is always 12 Mbit/sec
 }
 
 void loop() {
-
-chipEnable(true);
-outputEnable(true);
-
-  //Serial.println("Start reading ROM:");
-  delay(12000); // 12 seconds. ensure com port is opened in that time... read the rom!
+  delay(5000); // 5 seconds. ensure com port is opened in that time... then read the rom!
   
-for (uint32_t adress=0; adress < (1<<21); adress++) {
-  int16_t tmp = 0;
-  setAdress(adress);
-  delayMicroseconds(3); // does not work accurately with less than 3us
-  tmp = readWord();
+  for (uint32_t adress=0; adress < (1<<21); adress++) {
+    chipEnable(true);
+    outputEnable(true);
+    int16_t word = 0;
+    setAdress(adress);
+    delayMicroseconds(3); // does not work accurately with less than 3us
+    word = readWord();
 
-  //Serial.println(tmp);
-  Serial.print(char(tmp&0xFF));  Serial.print(char(tmp>>8)); // 2 bytes data usually per adress
-  // 8 seconds transmit packages over USB
-  
-  delayMicroseconds(7); // i guess we need to give the usb send function some time... how much?
-}
+    Serial.print(char(word&0xFF)); // lsb (send lsb first over serial port)
+    Serial.print(char(word>>8));   // msb
+    // 8 seconds to transmit 4MB over USB (should be the current limit of teensy usb library)
 
-  while(1);
+    delayMicroseconds(7); // i guess we need to give the usb send function some time... how much?
+  }
   
+  while(true); // Read the ROM only once, so for the moment get stuck in here.
 }
 
 void setAdress(uint32_t adress) {
-  (adress & 0x00000001) ? digitalWriteFast(0, HIGH) : digitalWriteFast(0, LOW);
-  (adress & 0x00000002) ? digitalWriteFast(1, HIGH) : digitalWriteFast(1, LOW);
-  (adress & 0x00000004) ? digitalWriteFast(2, HIGH) : digitalWriteFast(2, LOW);
-  (adress & 0x00000008) ? digitalWriteFast(3, HIGH) : digitalWriteFast(3, LOW);
-  (adress & 0x00000010) ? digitalWriteFast(4, HIGH) : digitalWriteFast(4, LOW);
-  (adress & 0x00000020) ? digitalWriteFast(5, HIGH) : digitalWriteFast(5, LOW);
-  (adress & 0x00000040) ? digitalWriteFast(6, HIGH) : digitalWriteFast(6, LOW);
-  (adress & 0x00000080) ? digitalWriteFast(7, HIGH) : digitalWriteFast(7, LOW);
-  (adress & 0x00000100) ? digitalWriteFast(8, HIGH) : digitalWriteFast(8, LOW);
-  (adress & 0x00000200) ? digitalWriteFast(9, HIGH) : digitalWriteFast(9, LOW);
-  (adress & 0x00000400) ? digitalWriteFast(10, HIGH) : digitalWriteFast(10, LOW);
-  (adress & 0x00000800) ? digitalWriteFast(11, HIGH) : digitalWriteFast(11, LOW);
-  (adress & 0x00001000) ? digitalWriteFast(12, HIGH) : digitalWriteFast(12, LOW);
-  (adress & 0x00002000) ? digitalWriteFast(13, HIGH) : digitalWriteFast(13, LOW);
-  (adress & 0x00004000) ? digitalWriteFast(14, HIGH) : digitalWriteFast(14, LOW);
-  (adress & 0x00008000) ? digitalWriteFast(15, HIGH) : digitalWriteFast(15, LOW);
-  (adress & 0x00010000) ? digitalWriteFast(16, HIGH) : digitalWriteFast(16, LOW);
-  (adress & 0x00020000) ? digitalWriteFast(17, HIGH) : digitalWriteFast(17, LOW);
-  (adress & 0x00040000) ? digitalWriteFast(18, HIGH) : digitalWriteFast(18, LOW);
-  (adress & 0x00080000) ? digitalWriteFast(19, HIGH) : digitalWriteFast(19, LOW);
-  (adress & 0x00100000) ? digitalWriteFast(20, HIGH) : digitalWriteFast(20, LOW);
+  (adress & 0x00000001<<0) ? digitalWriteFast(0, HIGH) : digitalWriteFast(0, LOW);
+  (adress & 0x00000001<<1) ? digitalWriteFast(1, HIGH) : digitalWriteFast(1, LOW);
+  (adress & 0x00000001<<2) ? digitalWriteFast(2, HIGH) : digitalWriteFast(2, LOW);
+  (adress & 0x00000001<<3) ? digitalWriteFast(3, HIGH) : digitalWriteFast(3, LOW);
+  (adress & 0x00000001<<4) ? digitalWriteFast(4, HIGH) : digitalWriteFast(4, LOW);
+  (adress & 0x00000001<<5) ? digitalWriteFast(5, HIGH) : digitalWriteFast(5, LOW);
+  (adress & 0x00000001<<6) ? digitalWriteFast(6, HIGH) : digitalWriteFast(6, LOW);
+  (adress & 0x00000001<<7) ? digitalWriteFast(7, HIGH) : digitalWriteFast(7, LOW);
+  (adress & 0x00000001<<8) ? digitalWriteFast(8, HIGH) : digitalWriteFast(8, LOW);
+  (adress & 0x00000001<<9) ? digitalWriteFast(9, HIGH) : digitalWriteFast(9, LOW);
+  (adress & 0x00000001<<10) ? digitalWriteFast(10, HIGH) : digitalWriteFast(10, LOW);
+  (adress & 0x00000001<<11) ? digitalWriteFast(11, HIGH) : digitalWriteFast(11, LOW);
+  (adress & 0x00000001<<12) ? digitalWriteFast(12, HIGH) : digitalWriteFast(12, LOW);
+  (adress & 0x00000001<<13) ? digitalWriteFast(13, HIGH) : digitalWriteFast(13, LOW);
+  (adress & 0x00000001<<14) ? digitalWriteFast(14, HIGH) : digitalWriteFast(14, LOW);
+  (adress & 0x00000001<<15) ? digitalWriteFast(15, HIGH) : digitalWriteFast(15, LOW);
+  (adress & 0x00000001<<16) ? digitalWriteFast(16, HIGH) : digitalWriteFast(16, LOW);
+  (adress & 0x00000001<<17) ? digitalWriteFast(17, HIGH) : digitalWriteFast(17, LOW);
+  (adress & 0x00000001<<18) ? digitalWriteFast(18, HIGH) : digitalWriteFast(18, LOW);
+  (adress & 0x00000001<<19) ? digitalWriteFast(19, HIGH) : digitalWriteFast(19, LOW);
+  (adress & 0x00000001<<20) ? digitalWriteFast(20, HIGH) : digitalWriteFast(20, LOW);
 }
 
 int16_t readWord() {
